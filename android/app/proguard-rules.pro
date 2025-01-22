@@ -1,0 +1,44 @@
+-keep class **.zego.** { *; }
+-keep class **.**.zego_zpns.** { *; }
+-keep class io.flutter.app.** { *; }
+-keep class io.flutter.plugin.**  { *; }
+-keep class io.flutter.util.**  { *; }
+-keep class io.flutter.view.**  { *; }
+-keep class io.flutter.**  { *; }
+-keep class io.flutter.plugins.**  { *; }
+-dontwarn com.heytap.msp.push.HeytapPushManager
+-dontwarn com.heytap.msp.push.callback.ICallBackResultService
+-dontwarn com.heytap.msp.push.mode.DataMessage
+-dontwarn com.heytap.msp.push.service.DataMessageCallbackService
+-dontwarn com.huawei.hms.aaid.HmsInstanceId
+-dontwarn com.huawei.hms.common.ApiException
+-dontwarn com.huawei.hms.push.HmsMessageService
+-dontwarn com.huawei.hms.push.RemoteMessage$Notification
+-dontwarn com.huawei.hms.push.RemoteMessage
+-dontwarn com.vivo.push.IPushActionListener
+-dontwarn com.vivo.push.PushClient
+-dontwarn com.vivo.push.PushConfig$Builder
+-dontwarn com.vivo.push.PushConfig
+-dontwarn com.vivo.push.listener.IPushQueryActionListener
+-dontwarn com.vivo.push.model.UPSNotificationMessage
+-dontwarn com.vivo.push.model.UnvarnishedMessage
+-dontwarn com.vivo.push.sdk.OpenClientPushMessageReceiver
+-dontwarn com.vivo.push.util.VivoPushException
+-dontwarn com.xiaomi.mipush.sdk.MiPushClient
+-dontwarn com.xiaomi.mipush.sdk.MiPushCommandMessage
+-dontwarn com.xiaomi.mipush.sdk.MiPushMessage
+-dontwarn com.xiaomi.mipush.sdk.PushMessageReceiver
+-dontwarn java.beans.ConstructorProperties
+-dontwarn java.beans.Transient
+-dontwarn org.w3c.dom.bootstrap.DOMImplementationRegistry
+-dontwarn com.google.android.play.core.splitcompat.SplitCompatApplication
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallException
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallManager
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallRequest$Builder
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallRequest
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallSessionState
+-dontwarn com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
+-dontwarn com.google.android.play.core.tasks.OnFailureListener
+-dontwarn com.google.android.play.core.tasks.OnSuccessListener
+-dontwarn com.google.android.play.core.tasks.Task
