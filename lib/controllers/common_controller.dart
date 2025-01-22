@@ -19,6 +19,7 @@ class CommonController extends GetxController {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   @override
   void onInit() {
@@ -50,6 +51,9 @@ class CommonController extends GetxController {
 
   void updateLastOpenedTime() async {
     User? user = _auth.currentUser;
+    String? token = await _fcm.getToken();
+    print('token: $token');
+
     if (user != null) {
       DocumentSnapshot userDoc =
           await _firestore.collection('users').doc(userName.value).get();
@@ -63,6 +67,7 @@ class CommonController extends GetxController {
           'email': user.email,
           'name': userName.value,
           'uid': user.uid,
+          'fcm_token': token,
           'lastOpened': FieldValue.serverTimestamp(),
         });
       }

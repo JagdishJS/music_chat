@@ -42,6 +42,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    
+    dependencies{
+        implementation 'com.android.support:multidex:1.0.3'
+    }
 }
 
 flutter {

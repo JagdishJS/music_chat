@@ -108,14 +108,28 @@ class _ChatScreenState extends State<ChatScreen> {
                     actions: [
                       IconButton(
                         icon: Icon(Icons.call, color: whiteColor),
-                        onPressed: () {
+                        onPressed: () async {
                           Get.toNamed("voice_call");
+                          // DocumentSnapshot userDoc = await _firestore
+                          //     .collection('users')
+                          //     .doc(commonController.partnerName.value)
+                          //     .get();
+                          // if (userDoc.exists) {
+                          //   PushNotificationService().sendFCMNotification(userDoc['fcm_token']);
+                          // }
                         },
                       ),
                       IconButton(
                         icon: Icon(Icons.videocam, color: whiteColor),
-                        onPressed: () {
+                        onPressed: () async {
                           Get.toNamed("video_call");
+                          // DocumentSnapshot userDoc = await _firestore
+                          //     .collection('users')
+                          //     .doc(CommonController().partnerName.value)
+                          //     .get();
+                          // if (userDoc.exists) {
+                          //   PushNotificationService().sendFCMNotification(userDoc['fcm_token']);
+                          // }
                         },
                       ),
                       IconButton(
@@ -335,11 +349,18 @@ class _ChatScreenState extends State<ChatScreen> {
       ],
       elevation: 3.0,
       color: charcoal,
-    ).then((value) {
+    ).then((value) async {
       if (value != null) {
         switch (value) {
           case 'edit':
             print('Edit Chat');
+            DocumentSnapshot userDoc = await _firestore
+            .collection('users')
+            .doc(CommonController().partnerName.value)
+            .get();
+               if (userDoc.exists) {
+                PushNotificationService().sendFCMNotification(userDoc['fcm_token']);
+              }
             break;
           case 'viewProfile':
             print('View Profile');

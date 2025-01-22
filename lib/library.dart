@@ -8,6 +8,9 @@ export 'package:firebase_core/firebase_core.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:cloud_firestore/cloud_firestore.dart';
 export 'package:zego_uikit_prebuilt_call/zego_uikit_prebuilt_call.dart';
+export 'package:firebase_messaging/firebase_messaging.dart';
+export 'package:flutter_local_notifications/flutter_local_notifications.dart';
+export 'package:permission_handler/permission_handler.dart';
 
 // Screens
 export './screens/splash.dart';
@@ -27,3 +30,4 @@ export 'utils/app_theme.dart';
 export 'utils/colors.dart';
 export 'utils/app_common.dart';
 export 'utils/local_storage.dart';
+export 'utils/notification.dart';

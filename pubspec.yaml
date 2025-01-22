@@ -7,7 +7,8 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.6.0
+  # sdk: ^3.6.0
+  sdk: '>=3.0.5 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -27,6 +28,12 @@ dependencies:
   cloud_firestore: ^5.2.1 
   intl: ^0.20.1
   zego_uikit_prebuilt_call: ^4.16.21
+  firebase_messaging: 
+  dio: ^5.3.0
+  flutter_local_notifications: ^17.2.1+1
+  audioplayers: ^6.1.0
+  path_provider: ^2.1.1
+  permission_handler:
 
 dev_dependencies:
   flutter_test:
