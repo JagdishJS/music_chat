@@ -21,7 +21,6 @@ class MyApp extends StatelessWidget {
   final GlobalKey<ScaffoldMessengerState> appScaffoldMessKey =
       GlobalKey<ScaffoldMessengerState>();
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -33,7 +32,6 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: appScaffoldMessKey,
       navigatorKey: appNavigateKey,
       routes: <String, WidgetBuilder>{
-        // pages
         'splashScreen': (BuildContext context) => const SplashScreen(),
         'login': (BuildContext context) => LoginScreen(),
         'signup': (BuildContext context) => SignupScreen(),

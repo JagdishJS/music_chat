@@ -291,8 +291,20 @@ class _ChatScreenState extends State<ChatScreen> {
                                     child: IconButton(
                                       icon: Icon(Icons.send,
                                           color: Colors.white, size: dh * 0.03),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         FocusScope.of(context).unfocus();
+                                        DocumentSnapshot userDoc =
+                                            await _firestore
+                                                .collection('users')
+                                                .doc(commonController
+                                                    .partnerName.value)
+                                                .get();
+                                        if (userDoc.exists) {
+                                          PushNotificationService()
+                                              .sendFCMNotification(
+                                                  userDoc['fcm_token']);
+                                        }
+
                                         _sendMessage(
                                             commonController.userName.value);
                                       },
@@ -354,13 +366,6 @@ class _ChatScreenState extends State<ChatScreen> {
         switch (value) {
           case 'edit':
             print('Edit Chat');
-            DocumentSnapshot userDoc = await _firestore
-            .collection('users')
-            .doc(CommonController().partnerName.value)
-            .get();
-               if (userDoc.exists) {
-                PushNotificationService().sendFCMNotification(userDoc['fcm_token']);
-              }
             break;
           case 'viewProfile':
             print('View Profile');

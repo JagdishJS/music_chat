@@ -53,7 +53,6 @@ class CommonController extends GetxController {
     User? user = _auth.currentUser;
     String? token = await _fcm.getToken();
     print('token: $token');
-
     if (user != null) {
       DocumentSnapshot userDoc =
           await _firestore.collection('users').doc(userName.value).get();
@@ -61,6 +60,7 @@ class CommonController extends GetxController {
       if (userDoc.exists) {
         await _firestore.collection('users').doc(userName.value).update({
           'lastOpened': FieldValue.serverTimestamp(),
+          'fcm_token': token,
         });
       } else {
         await _firestore.collection('users').doc(userName.value).set({
