@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+/android/app/google-services.json
+/music-chat-8a625-firebase-adminsdk-fbsvc-edd108fb04.json
 
 # Symbolication related
 app.*.symbols

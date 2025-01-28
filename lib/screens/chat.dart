@@ -14,11 +14,16 @@ class _ChatScreenState extends State<ChatScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? user;
   ScrollController scrollController = ScrollController();
+  late FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
     super.initState();
+    firebaseMessaging.requestPermission();
     user = _auth.currentUser;
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Received a message: ${message.notification?.title}');
+    });
   }
 
   @override
@@ -109,6 +114,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(Icons.call, color: whiteColor),
                         onPressed: () async {
+                          var data = await commonController.getAccessToken(
+                              commonController.userName.value,
+                              "Incoming Voice Call");
+                          print(data);
                           Get.toNamed("voice_call");
                           // DocumentSnapshot userDoc = await _firestore
                           //     .collection('users')
@@ -122,6 +131,10 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(Icons.videocam, color: whiteColor),
                         onPressed: () async {
+                          var data = await commonController.getAccessToken(
+                              commonController.userName.value,
+                              "Incoming Video Call");
+                          print(data);
                           Get.toNamed("video_call");
                           // DocumentSnapshot userDoc = await _firestore
                           //     .collection('users')
@@ -293,18 +306,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                           color: Colors.white, size: dh * 0.03),
                                       onPressed: () async {
                                         FocusScope.of(context).unfocus();
-                                        DocumentSnapshot userDoc =
-                                            await _firestore
-                                                .collection('users')
-                                                .doc(commonController
-                                                    .partnerName.value)
-                                                .get();
-                                        if (userDoc.exists) {
-                                          PushNotificationService()
-                                              .sendFCMNotification(
-                                                  userDoc['fcm_token']);
-                                        }
-
+                                        var data = await commonController
+                                            .getAccessToken(
+                                                commonController.userName.value,
+                                                _messageController.text);
+                                        print(data);
                                         _sendMessage(
                                             commonController.userName.value);
                                       },

@@ -21,7 +21,7 @@ class PushNotificationService {
     } else {
       print('User declined or has not accepted permission');
     }
-    
+
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('Received message: ${message.notification?.title}');
@@ -37,15 +37,16 @@ class PushNotificationService {
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   }
 
-    // Background message handler
-    static Future<void> _firebaseMessagingBackgroundHandler(
+  // Background message handler
+  static Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-      print('Handling a background message: ${message.messageId}');
+    print('Handling a background message: ${message.messageId}');
   }
 
   Future<void> sendFCMNotification(String token) async {
-    const String serverKey = 
-    'BO2AfmCXcDsZeE1fnQu1Qq1cfB59roB-FMGZqsS_mYJiT0BsJUkofX9MZOywoR15x1DsrwRyyHDsESMKJJ11EtA'; // Replace with your server key
+  
+    const String serverKey =
+        'BO2AfmCXcDsZeE1fnQu1Qq1cfB59roB-FMGZqsS_mYJiT0BsJUkofX9MZOywoR15x1DsrwRyyHDsESMKJJ11EtA'; // Replace with your server key
     const String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
     final Dio dio = Dio();
