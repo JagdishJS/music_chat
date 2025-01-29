@@ -138,4 +138,96 @@ class CommonController extends GetxController {
       throw Exception('Failed to retrieve access token');
     }
   }
+
+  // Function to get the access token for your service account
+  Future<String> voiceCallAccessToken(String title, String body) async {
+    final String serviceAccountJson = await rootBundle
+        .loadString('music-chat-8a625-firebase-adminsdk-fbsvc-edd108fb04.json');
+    final Map<String, dynamic> serviceAccount = jsonDecode(serviceAccountJson);
+
+    try {
+      // Send POST request with Dio
+      final client = await clientViaServiceAccount(
+        ServiceAccountCredentials.fromJson(serviceAccount),
+        ['https://www.googleapis.com/auth/cloud-platform'],
+      );
+
+      final notificationData = {
+        'message': {
+          'token': partnerFcmToken.value,
+            "notification": {"title": title, "body": body},
+            "data": {
+            "type": "voice_call",
+            "action": "incoming",
+            "call_id": callerId, // Custom data for identifying the call
+            "accept_action": "accept_call",
+            "reject_action": "reject_call"
+          }
+        },
+      };
+
+      final response = await client.post(
+        Uri.parse(
+            'https://fcm.googleapis.com/v1/projects/music-chat-8a625/messages:send'),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: jsonEncode(notificationData),
+      );
+
+      client.close();
+      if (response.statusCode == 200) {
+        return "Success!"; // Success!
+      }
+      return "Failed!"; // Failed!
+    } catch (e) {
+      throw Exception('Failed to retrieve access token');
+    }
+  }
+
+    // Function to get the access token for your service account
+  Future<String> videoCallAccessToken(String title, String body) async {
+    final String serviceAccountJson = await rootBundle
+        .loadString('music-chat-8a625-firebase-adminsdk-fbsvc-edd108fb04.json');
+    final Map<String, dynamic> serviceAccount = jsonDecode(serviceAccountJson);
+
+    try {
+      // Send POST request with Dio
+      final client = await clientViaServiceAccount(
+        ServiceAccountCredentials.fromJson(serviceAccount),
+        ['https://www.googleapis.com/auth/cloud-platform'],
+      );
+
+      final notificationData = {
+        'message': {
+          'token': partnerFcmToken.value,
+            "notification": {"title": title, "body": body},
+            "data": {
+            "type": "video_call",
+            "action": "incoming",
+            "call_id": callerId, // Custom data for identifying the call
+            "accept_action": "accept_video_call",
+            "reject_action": "reject_video_call"
+          }
+        },
+      };
+
+      final response = await client.post(
+        Uri.parse(
+            'https://fcm.googleapis.com/v1/projects/music-chat-8a625/messages:send'),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: jsonEncode(notificationData),
+      );
+
+      client.close();
+      if (response.statusCode == 200) {
+        return "Success!"; // Success!
+      }
+      return "Failed!"; // Failed!
+    } catch (e) {
+      throw Exception('Failed to retrieve access token');
+    }
+  }
 }

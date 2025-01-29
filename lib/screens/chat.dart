@@ -114,7 +114,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(Icons.call, color: whiteColor),
                         onPressed: () async {
-                          var data = await commonController.getAccessToken(
+                          var data = await commonController.voiceCallAccessToken(
                               commonController.userName.value,
                               "Incoming Voice Call");
                           print(data);
@@ -131,7 +131,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       IconButton(
                         icon: Icon(Icons.videocam, color: whiteColor),
                         onPressed: () async {
-                          var data = await commonController.getAccessToken(
+                          var data = await commonController.videoCallAccessToken(
                               commonController.userName.value,
                               "Incoming Video Call");
                           print(data);

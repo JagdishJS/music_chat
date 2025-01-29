@@ -24,8 +24,15 @@ class PushNotificationService {
 
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Received message: ${message.notification?.title}');
-      notification(message: message);
+      print('Received message: ${message}');
+
+      if (message.data['type'] == 'voice_call') {
+        voiceCallNotification(message: message);
+      } else if (message.data['type'] == 'video_call') {
+        videoCallNotification(message: message);
+      } else {
+        notification(message: message);
+      }
     });
 
     // Handle background and terminated messages
@@ -43,52 +50,24 @@ class PushNotificationService {
     print('Handling a background message: ${message.messageId}');
   }
 
-  Future<void> sendFCMNotification(String token) async {
-  
-    const String serverKey =
-        'BO2AfmCXcDsZeE1fnQu1Qq1cfB59roB-FMGZqsS_mYJiT0BsJUkofX9MZOywoR15x1DsrwRyyHDsESMKJJ11EtA'; // Replace with your server key
-    const String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
-
-    final Dio dio = Dio();
-
-    final Map<String, dynamic> notification = {
-      'title': 'Incoming Call',
-      'body': '${CommonController().partnerName.value} is calling you..',
-    };
-
-    final Map<String, dynamic> data = {
-      'to': token,
-      'notification': notification,
-      'priority': 'high',
-    };
-
-    final Options options = Options(
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'key=$serverKey',
-      },
-    );
-
-    try {
-      final response = await dio.post(
-        fcmUrl,
-        data: json.encode(data),
-        options: options,
-      );
-
-      if (response.statusCode == 200) {
-        print('Notification sent successfully');
-      } else {
-        print('Failed to send notification: ${response.statusCode}');
-        print('Response: ${response.data}');
-      }
-    } catch (e) {
-      print('Error sending notification: $e');
-    }
-  }
-
   Future<void> notification({required RemoteMessage message}) async {
     NotificationService().showNotification(
+        id: 1,
+        title: '${message.notification?.title}',
+        body: "${message.notification?.body}",
+        payLoad: "");
+  }
+
+  Future<void> voiceCallNotification({required RemoteMessage message}) async {
+    NotificationService().showCallNotification(
+        id: 1,
+        title: '${message.notification?.title}',
+        body: "${message.notification?.body}",
+        payLoad: "");
+  }
+
+  Future<void> videoCallNotification({required RemoteMessage message}) async {
+    NotificationService().showVideoCallNotification(
         id: 1,
         title: '${message.notification?.title}',
         body: "${message.notification?.body}",
@@ -153,7 +132,105 @@ class NotificationService {
 
   onSelectNotifications(NotificationResponse notificationResponse) async {
     LocalStorageService.storeData('alertStop', true);
-    // Get.toNamed("voice_call");
+    if (notificationResponse.actionId == "accept_call") {
+      print("Call Accepted");
+      Get.toNamed("voice_call");
+    } else if (notificationResponse.actionId == "reject_call") {
+      print("Call Rejected");
+    } else if (notificationResponse.actionId == "accept_video_call") {
+      Get.toNamed("video_call");
+    } else if (notificationResponse.actionId == "reject_video_call") {
+      print("Vide Call Rejected");
+    }
+
+  }
+
+  callNotificationDetails() {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.max,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('alert'),
+      enableLights: true,
+      showBadge: true,
+    );
+    return NotificationDetails(
+        android: AndroidNotificationDetails('channelId', 'channelName',
+            playSound: true,
+            priority: Priority.high,
+            color: Colors.deepOrange,
+            channelDescription: channel.description,
+            actions: <AndroidNotificationAction>[
+              AndroidNotificationAction(
+                'accept_call', // Action ID
+                'Accept',  // Button Text
+                showsUserInterface: true, // Show UI when pressed
+              ),
+              AndroidNotificationAction(
+                'reject_call',
+                'Reject',
+                showsUserInterface: true,
+              ),
+            ],
+
+            // sound:  UriAndroidNotificationSound("assets/alert.mp3"),
+
+            sound: const RawResourceAndroidNotificationSound('alert'),
+            icon: "ic_launcher",
+            importance: Importance.max));
+  }
+
+  videoCallNotificationDetails() {
+    const AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'high_importance_channel', // id
+      'High Importance Notifications', // title
+      description:
+          'This channel is used for important notifications.', // description
+      importance: Importance.max,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('alert'),
+      enableLights: true,
+      showBadge: true,
+    );
+    return NotificationDetails(
+        android: AndroidNotificationDetails('channelId', 'channelName',
+            playSound: true,
+            priority: Priority.high,
+            color: Colors.deepOrange,
+            channelDescription: channel.description,
+            actions: <AndroidNotificationAction>[
+              AndroidNotificationAction(
+                'accept_video_call',
+                'Accept', titleColor: Colors.green,
+                showsUserInterface: true,
+              ),
+              AndroidNotificationAction(
+                'reject_video_call',
+                'Reject', titleColor: Colors.red,
+                showsUserInterface: true,
+              ),
+            ],
+
+            // sound:  UriAndroidNotificationSound("assets/alert.mp3"),
+
+            sound: const RawResourceAndroidNotificationSound('alert'),
+            icon: "ic_launcher",
+            importance: Importance.max));
+  }
+
+  Future showCallNotification(
+      {int id = 0, String? title, String? body, String? payLoad}) async {
+    notificationsPlugin.show(id, title, body, await callNotificationDetails(),
+        payload: payLoad);
+  }
+
+   Future showVideoCallNotification(
+      {int id = 0, String? title, String? body, String? payLoad}) async {
+    notificationsPlugin.show(id, title, body, await videoCallNotificationDetails(),
+        payload: payLoad);
   }
 }
 
